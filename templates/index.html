@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estatus Reportes DGSP</title>
+    <!-- Incluyendo Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Navigation -->
+<nav class="navbar navbar-expand-lg" style="background-color: #fefefe;" static-top>
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <img src="https://seguridad.guanajuato.gob.mx/wp-content/uploads/2021/05/logo-dgsp.jpg" alt="..." height="130">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Inicio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="http://127.0.0.1:5600/lista-de-empleados" target="_blank">Sistema de Reportes DGSP</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Opciones
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" href="http://127.0.0.1:5600/registrar-empleado" target="_blank">Registrar Reporte Nuevo</a></li>
+              <li><a class="dropdown-item" href="#"></a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a class="dropdown-item" href="#"></a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</head>
+<body class="bg-light">
+
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Estatus Reportes DGSP</h1>
+
+        <!-- Formulario para agregar nuevo reporte -->
+        <div class="card mb-4">
+            <div class="card-header">
+                Agregar Nuevo Reporte
+            </div>
+            <div class="card-body">
+                <form action="/agregar_reporte" method="POST" class="row g-3">
+                    <div class="col-md-6">
+                        <label for="titulo" class="form-label">Título del Reporte</label>
+                        <input type="text" class="form-control" name="titulo" id="titulo" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="correos" class="form-label">Correos Electrónicos (separados por comas)</label>
+                        <input type="text" class="form-control" name="correos" id="correos" required>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">Agregar Reporte</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tabla de reportes -->
+        <h2 class="text-center mb-4">Lista de Reportes</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Título</th>
+                        <th>Estatus</th>
+                        <th>Correos</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reporte in reportes %}
+                    <tr>
+                        <td>{{ reporte[0] }}</td>
+                        <td>{{ reporte[1] }}</td>
+                        <td>{{ reporte[2] }}</td>
+                        <td>{{ reporte[3] }}</td>
+                        <td>
+                            <form action="/cambiar_estatus" method="POST" class="d-inline">
+                                <input type="hidden" name="id" value="{{ reporte[0] }}">
+                                <button type="submit" class="btn btn-warning btn-sm">Cambiar Estatus</button>
+                            </form>
+                            <form action="/editar_reporte/{{ reporte[0] }}" method="GET" class="d-inline">
+                                <button type="submit" class="btn btn-info btn-sm">Editar</button>
+                            </form>
+                            <form action="/eliminar_reporte/{{ reporte[0] }}" method="POST" class="d-inline">
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este reporte?')">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Flash messages -->
+        {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+                <div class="alert mt-4">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
