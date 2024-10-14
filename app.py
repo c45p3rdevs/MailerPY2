@@ -73,7 +73,7 @@ def enviar_correo(asunto, mensaje, destinatarios, archivos=None):
         flash(f"Error al enviar correo: {e}", "error")
         return False
 
-# Ruta para la página principal
+# Ruta para la página principal1
 @app.route('/')
 def index():
     cursor.execute('SELECT * FROM reportes')
