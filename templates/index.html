@@ -53,7 +53,7 @@
                 Agregar Nuevo Reporte
             </div>
             <div class="card-body">
-                <form action="/agregar_reporte" method="POST" class="row g-3">
+                <form action="/agregar_reporte" method="POST" enctype="multipart/form-data">
                     <div class="col-md-6">
                         <label for="titulo" class="form-label">Título del Reporte</label>
                         <input type="text" class="form-control" name="titulo" id="titulo" required>
@@ -62,10 +62,15 @@
                         <label for="correos" class="form-label">Correos Electrónicos (separados por comas)</label>
                         <input type="text" class="form-control" name="correos" id="correos" required>
                     </div>
+                    <div class="col-md-6">
+                        <label for="archivos" class="form-label">Adjuntar Archivos</label>
+                        <input type="file" class="form-control" name="archivos" id="archivos" multiple>
+                    </div>
                     <div class="col-12">
                         <button type="submit" class="btn btn-primary">Agregar Reporte</button>
                     </div>
                 </form>
+                
             </div>
         </div>
 

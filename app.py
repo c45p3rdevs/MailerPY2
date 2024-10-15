@@ -36,6 +36,10 @@ def enviar_correo(asunto, mensaje, destinatarios, archivos=None):
         remitente = "oimirandao@guanajuato.gob.mx"
         password = "alex coxn efyc zjkf"
 
+
+
+
+
         
         msg = MIMEMultipart()
         msg['Subject'] = asunto
@@ -43,11 +47,6 @@ def enviar_correo(asunto, mensaje, destinatarios, archivos=None):
         msg['To'] = ", ".join(destinatarios)
         msg.attach(MIMEText(mensaje, 'html'))
 
-        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
-            server.login(remitente, password)
-            server.sendmail(remitente, destinatarios, msg.as_string())
-            msg = MIMEText(mensaje, 'html')
-           
 
 
         if archivos:
@@ -65,6 +64,23 @@ def enviar_correo(asunto, mensaje, destinatarios, archivos=None):
                     encoders.encode_base64(mime)
                     mime.add_header('Content-Disposition', f'attachment; filename="{filename}"')
                     msg.attach(mime)        
+                   
+                     # Asegurar que el archivo esté completamente cerrado antes de eliminarlo
+                    del f
+
+                    #os.remove(path)
+
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
+            server.login(remitente, password)
+            server.sendmail(remitente, destinatarios, msg.as_string())
+           # msg = MIMEText(mensaje, 'html')
+           
+
+
+        
+
+
+                    
             
         
         flash(f"Correo enviado exitosamente a: {', '.join(destinatarios)}.", "success")
@@ -85,9 +101,11 @@ def index():
 def agregar_reporte():
     titulo = request.form['titulo']
     correos = request.form['correos']
+    archivos = request.files.getlist('archivos')  # Obtener los archivos adjuntos
 
     correos_lista = correos.split(',')
     correos_invalidos = validar_correos(correos_lista)
+
     
     if correos_invalidos:
         flash(f"Los siguientes correos son inválidos: {', '.join(correos_invalidos)}.", "error")
@@ -98,7 +116,7 @@ def agregar_reporte():
     conn.commit()
    
     mensaje = f"Gracias por enviar su reporte <strong>{titulo}</strong>. Le confirmamos que hemos recibido su solicitud y será atendida a la brevedad posible. Nuestro equipo ya está trabajando para resolver el asunto y le mantendremos informado(a) sobre cualquier actualización importante.<br> <strong>En un momento recibirá los detalles de su reporte</strong><br> <strong>Atentamente</strong> <br> <img src='https://i.ibb.co/tZ5x7dk/BannNvo1.png'>"
-    enviar_correo("Nuevo Reporte Generado", mensaje, correos_lista)
+    enviar_correo("Nuevo Reporte Generado", mensaje, correos_lista, archivos=archivos)
 
     flash("Reporte agregado y correos enviados.", "success")
     return redirect(url_for('index'))
