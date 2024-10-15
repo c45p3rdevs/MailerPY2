@@ -115,7 +115,7 @@ def agregar_reporte():
     cursor.execute('INSERT INTO reportes (titulo, estatus, correos) VALUES (%s, %s, %s)', (titulo, 'Pendiente', correos))
     conn.commit()
    
-    mensaje = f"Gracias por enviar su reporte <strong>{titulo}</strong>. Le confirmamos que hemos recibido su solicitud y será atendida a la brevedad posible. Nuestro equipo ya está trabajando para resolver el asunto y le mantendremos informado(a) sobre cualquier actualización importante.<br> <strong>En un momento recibirá los detalles de su reporte</strong><br> <strong>Atentamente</strong> <br> <img src='https://i.ibb.co/tZ5x7dk/BannNvo1.png'>"
+    mensaje = f"Gracias por enviar su reporte <strong>{titulo}</strong>. Le confirmamos que hemos recibido su solicitud y será atendida a la brevedad posible. Nuestro equipo ya está trabajando para resolver el asunto y le mantendremos informado(a) sobre cualquier actualización importante.<br> <strong>En la parte inferior puede descargar los detalles de su reporte</strong><br> <strong>Atentamente</strong> <br> <img src='https://i.ibb.co/tZ5x7dk/BannNvo1.png'>"
     enviar_correo("Nuevo Reporte Generado", mensaje, correos_lista, archivos=archivos)
 
     flash("Reporte agregado y correos enviados.", "success")
