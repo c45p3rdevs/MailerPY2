@@ -3,10 +3,12 @@ body {
     background-color: #f4f4f4;
     margin: 0;
     padding: 20px;
+    font-size: 14px;
 }
 
 h1, h2 {
     color: #333;
+    font-size: 1.5rem;
 }
 
 form {
